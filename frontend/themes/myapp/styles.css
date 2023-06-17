@@ -1,0 +1,7 @@
+@import url('./main-layout.css');
+@import url('./views/main-page-view.css');
+@import url('./views/teams-view.css');
+@import url('./views/players-view.css');
+@import url('./views/search-view.css');
+@import url('./views/my-account-view.css');
+@import url('./views/editor-view.css');
