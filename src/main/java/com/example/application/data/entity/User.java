@@ -13,7 +13,8 @@ import jakarta.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "application_user")
+@Table(name = "users")
+// MyAccountView.java
 public class User extends AbstractEntity {
 
     private String username;

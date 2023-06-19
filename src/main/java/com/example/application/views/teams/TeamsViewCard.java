@@ -1,10 +1,8 @@
 package com.example.application.views.teams;
 
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.theme.lumo.LumoUtility.AlignItems;
 import com.vaadin.flow.theme.lumo.LumoUtility.Background;
 import com.vaadin.flow.theme.lumo.LumoUtility.BorderRadius;
@@ -19,15 +17,28 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Padding;
 import com.vaadin.flow.theme.lumo.LumoUtility.TextColor;
 import com.vaadin.flow.theme.lumo.LumoUtility.Width;
 
+import javax.swing.*;
+import java.util.Collection;
+
 public class TeamsViewCard extends ListItem {
 
-    public TeamsViewCard(String text, String url) {
-        addClassNames(Background.CONTRAST_5, Display.FLEX, FlexDirection.COLUMN, AlignItems.START, Padding.MEDIUM,
+    public TeamsViewCard(String text, String url, String subtitleText, String descriptionText, String cardDescriptionText) {
+        addClassNames(Background.CONTRAST_5,
+                Display.FLEX,
+                FlexDirection.COLUMN,
+                AlignItems.START,
+                Padding.MEDIUM,
                 BorderRadius.LARGE);
 
         Div div = new Div();
-        div.addClassNames(Background.CONTRAST, Display.FLEX, AlignItems.CENTER, JustifyContent.CENTER,
-                Margin.Bottom.MEDIUM, Overflow.HIDDEN, BorderRadius.MEDIUM, Width.FULL);
+        div.addClassNames(Background.CONTRAST,
+                Display.FLEX,
+                AlignItems.CENTER,
+                JustifyContent.CENTER,
+                Margin.Bottom.MEDIUM,
+                Overflow.HIDDEN,
+                BorderRadius.MEDIUM,
+                Width.FULL);
         div.setHeight("160px");
 
         Image image = new Image();
@@ -38,22 +49,33 @@ public class TeamsViewCard extends ListItem {
         div.add(image);
 
         Span header = new Span();
-        header.addClassNames(FontSize.XLARGE, FontWeight.SEMIBOLD);
-        header.setText("Title");
+        header.addClassNames(FontSize.XLARGE,
+                FontWeight.SEMIBOLD);
+        header.setText(text);
 
         Span subtitle = new Span();
-        subtitle.addClassNames(FontSize.SMALL, TextColor.SECONDARY);
-        subtitle.setText("Card subtitle");
+        subtitle.addClassNames(FontSize.SMALL,
+                TextColor.SECONDARY);
+        subtitle.setText(subtitleText);
 
-        Paragraph description = new Paragraph(
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.");
+        Paragraph description = new Paragraph(descriptionText);
         description.addClassName(Margin.Vertical.MEDIUM);
 
-        Span badge = new Span();
-        badge.getElement().setAttribute("theme", "badge");
-        badge.setText("Label");
+        add(div, header, subtitle, description);
 
-        add(div, header, subtitle, description, badge);
+        addClickListener(event -> {
+            Dialog dialog = new Dialog();
+            dialog.setCloseOnOutsideClick(true);
 
+            // Utwórz komponenty dla rozszerzonych informacji
+            H2 cardHeader = new H2(text);
+            Span cardSubtitle = new Span(subtitleText);
+            Paragraph cardDescription = new Paragraph(cardDescriptionText);
+
+            // Dodaj komponenty do okna dialogowego
+            dialog.add(cardHeader, cardSubtitle, cardDescription);
+
+            dialog.open();
+        });
     }
 }

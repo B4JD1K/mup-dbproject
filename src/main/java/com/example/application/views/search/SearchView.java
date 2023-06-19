@@ -1,7 +1,7 @@
 package com.example.application.views.search;
 
-import com.example.application.data.entity.SamplePerson;
-import com.example.application.data.service.SamplePersonService;
+import com.example.application.data.entity.User;
+import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -42,13 +42,13 @@ import org.springframework.data.jpa.domain.Specification;
 @Uses(Icon.class)
 public class SearchView extends Div {
 
-    private Grid<SamplePerson> grid;
+    private Grid<User> grid;
 
     private Filters filters;
-    private final SamplePersonService samplePersonService;
+    private final UserService userService;
 
-    public SearchView(SamplePersonService SamplePersonService) {
-        this.samplePersonService = SamplePersonService;
+    public SearchView(UserService userService) {
+        this.userService = userService;
         setSizeFull();
         addClassNames("search-view");
 
@@ -84,7 +84,7 @@ public class SearchView extends Div {
         return mobileFilters;
     }
 
-    public static class Filters extends Div implements Specification<SamplePerson> {
+    public static class Filters extends Div implements Specification<User> {
 
         private final TextField name = new TextField("Name");
         private final TextField phone = new TextField("Phone");
@@ -152,7 +152,7 @@ public class SearchView extends Div {
         }
 
         @Override
-        public Predicate toPredicate(Root<SamplePerson> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
             List<Predicate> predicates = new ArrayList<>();
 
             if (!name.isEmpty()) {
@@ -213,7 +213,7 @@ public class SearchView extends Div {
         }
 
         private Expression<String> ignoreCharacters(String characters, CriteriaBuilder criteriaBuilder,
-                Expression<String> inExpression) {
+                                                    Expression<String> inExpression) {
             Expression<String> expression = inExpression;
             for (int i = 0; i < characters.length(); i++) {
                 expression = criteriaBuilder.function("replace", String.class, expression,
@@ -225,7 +225,7 @@ public class SearchView extends Div {
     }
 
     private Component createGrid() {
-        grid = new Grid<>(SamplePerson.class, false);
+        grid = new Grid<>(User.class, false);
         grid.addColumn("firstName").setAutoWidth(true);
         grid.addColumn("lastName").setAutoWidth(true);
         grid.addColumn("email").setAutoWidth(true);
@@ -234,7 +234,7 @@ public class SearchView extends Div {
         grid.addColumn("occupation").setAutoWidth(true);
         grid.addColumn("role").setAutoWidth(true);
 
-        grid.setItems(query -> samplePersonService.list(
+        grid.setItems(query -> userService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)),
                 filters).stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);

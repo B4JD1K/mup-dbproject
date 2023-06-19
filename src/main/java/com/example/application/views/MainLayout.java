@@ -21,6 +21,7 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
@@ -61,7 +62,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("My App");
+        H1 appName = new H1("CSGO Teams App");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
@@ -74,7 +75,7 @@ public class MainLayout extends AppLayout {
         SideNav nav = new SideNav();
 
         if (accessChecker.hasAccess(MainPageView.class)) {
-            nav.addItem(new SideNavItem("Main Page", MainPageView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
+            nav.addItem(new SideNavItem("About", MainPageView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
 
         }
         if (accessChecker.hasAccess(TeamsView.class)) {
@@ -133,8 +134,15 @@ public class MainLayout extends AppLayout {
 
             layout.add(userMenu);
         } else {
+            Anchor registerLink = new Anchor("register", "Register");
             Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
+
+            VerticalLayout links = new VerticalLayout();
+            links.add(registerLink, loginLink);
+            links.setSpacing(false);
+            links.setPadding(false);
+
+            layout.add(links);
         }
 
         return layout;
