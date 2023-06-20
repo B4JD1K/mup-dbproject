@@ -1,46 +1,35 @@
 package com.example.application.views.login;
 
-import com.example.application.security.AuthenticatedUser;
-import com.vaadin.flow.component.login.LoginI18n;
-import com.vaadin.flow.component.login.LoginOverlay;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.internal.RouteUtil;
-import com.vaadin.flow.server.VaadinService;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.example.application.views.MainLayout;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.*;
 
-@AnonymousAllowed
 @PageTitle("Login")
-@Route(value = "login")
-public class LoginView extends LoginOverlay implements BeforeEnterObserver {
+@Route(value = "login", layout = MainLayout.class)
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-    private final AuthenticatedUser authenticatedUser;
+    private final LoginForm login = new LoginForm();
 
-    public LoginView(AuthenticatedUser authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
-        setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
+    public LoginView(){
+        addClassName("login-view");
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
 
-        LoginI18n i18n = LoginI18n.createDefault();
-        i18n.setHeader(new LoginI18n.Header());
-        i18n.getHeader().setTitle("Aplikacja z drużynami CSGO");
-        i18n.getHeader().setDescription("Domyślni użytkownicy user/user oraz admin/admin");
-        i18n.setAdditionalInformation(null);
-        setI18n(i18n);
+        login.setAction("login");
 
-        setForgotPasswordButtonVisible(false);
-        setOpened(true);
+        add(new H1("Team app"), login);
     }
 
     @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        if (authenticatedUser.get().isPresent()) {
-            // Already logged in
-            setOpened(false);
-            event.forwardTo("");
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if(beforeEnterEvent.getLocation()
+                .getQueryParameters()
+                .getParameters()
+                .containsKey("error")) {
+            login.setError(true);
         }
-
-        setError(event.getLocation().getQueryParameters().getParameters().containsKey("error"));
     }
 }

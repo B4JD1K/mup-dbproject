@@ -3,51 +3,51 @@ package com.example.application.data.entity;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Players extends AbstractEntity {
-    private String imie;
-    private String nazwisko;
-    private String nick;
-    private String pozycja;
-    private String druzyna;
+public class Teams extends AbstractEntity {
+    private String nazwa;
+    private String image;
+    private String podtytul;
+    private String opiskrotki;
+    private String opisdlugi;
 
-    public String getImie() {
-        return imie;
+    public String getNazwa() {
+        return nazwa;
     }
 
-    public void setImie(String imie) {
-        this.imie = imie;
+    public void setNazwa(String nazwa) {
+        this.nazwa = nazwa;
     }
 
-    public String getNazwisko() {
-        return nazwisko;
+    public String getImage() {
+        return image;
     }
 
-    public void setNazwisko(String nazwisko) {
-        this.nazwisko = nazwisko;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getNick() {
-        return nick;
+    public String getPodtytul() {
+        return podtytul;
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
+    public void setPodtytul(String podtytul) {
+        this.podtytul = podtytul;
     }
 
-    public String getPozycja() {
-        return pozycja;
+    public String getOpiskrotki() {
+        return opiskrotki;
     }
 
-    public void setPozycja(String pozycja) {
-        this.pozycja = pozycja;
+    public void setOpiskrotki(String opiskrotki) {
+        this.opiskrotki = opiskrotki;
     }
 
-    public String getDruzyna() {
-        return druzyna;
+    public String getOpisdlugi() {
+        return opisdlugi;
     }
 
-    public void setDruzyna(String druzyna) {
-        this.druzyna = druzyna;
+    public void setOpisdlugi(String opisdlugi) {
+        this.opisdlugi = opisdlugi;
     }
 }
 

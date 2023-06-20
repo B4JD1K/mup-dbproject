@@ -21,28 +21,28 @@ public class Application implements AppShellConfigurator {
         SpringApplication.run(Application.class, args);
     }
 
-//    @Bean
-//    public DataSource dataSource() {
-//        HikariConfig config = new HikariConfig();
-//        config.setJdbcUrl("jdbc:mysql://localhost:3306/projekt");
-//        config.setUsername("odadoz");
-//        config.setPassword("123456");
-//        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//
-//        return new HikariDataSource(config);
-//    }
-
     @Bean
-    SqlDataSourceScriptDatabaseInitializer dataSourceScriptDatabaseInitializer(DataSource dataSource,
-                                                                               SqlInitializationProperties properties, UserRepository repository) {
-        return new SqlDataSourceScriptDatabaseInitializer(dataSource, properties) {
-            @Override
-            public boolean initializeDatabase() {
-                if (repository.count() == 0L) {
-                    return super.initializeDatabase();
-                }
-                return false;
-            }
-        };
+    public DataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/projekt");
+        config.setUsername("odadoz");
+        config.setPassword("123456");
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+        return new HikariDataSource(config);
     }
+
+//    @Bean
+//    SqlDataSourceScriptDatabaseInitializer dataSourceScriptDatabaseInitializer(DataSource dataSource,
+//                                                                               SqlInitializationProperties properties, UserRepository repository) {
+//        return new SqlDataSourceScriptDatabaseInitializer(dataSource, properties) {
+//            @Override
+//            public boolean initializeDatabase() {
+//                if (repository.count() == 0L) {
+//                    return super.initializeDatabase();
+//                }
+//                return false;
+//            }
+//        };
+//    }
 }

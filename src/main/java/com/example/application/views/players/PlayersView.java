@@ -27,10 +27,11 @@ import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.Optional;
 
-@PageTitle("Players")
+@PageTitle("Zawodnicy")
 @Route(value = "players/:action?(edit)", layout = MainLayout.class)
 @AnonymousAllowed
 public class PlayersView extends Div implements BeforeEnterObserver {
@@ -64,7 +65,6 @@ public class PlayersView extends Div implements BeforeEnterObserver {
         SplitLayout splitLayout = new SplitLayout();
 
         createGridLayout(splitLayout);
-        createEditorLayout(splitLayout);
 
         add(splitLayout);
 
@@ -78,16 +78,6 @@ public class PlayersView extends Div implements BeforeEnterObserver {
                         PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-
-        // when a row is selected or deselected, populate form
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(TEAM_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
-            } else {
-                clearForm();
-                UI.getCurrent().navigate(PlayersView.class);
-            }
-        });
 
         // Configure Form
         binder = new BeanValidationBinder<>(Players.class);
@@ -110,26 +100,21 @@ public class PlayersView extends Div implements BeforeEnterObserver {
                 refreshGrid();
                 Notification.show("Data updated");
                 UI.getCurrent().navigate(PlayersView.class);
-            } catch (ObjectOptimisticLockingFailureException exception) {
-                Notification n = Notification.show(
-                        "Error updating the data. Somebody else has updated the record while you were making changes.");
-                n.setPosition(Position.MIDDLE);
-                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
             } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
+                Notification.show("Błąd podczas aktualizacji danych, sprawdź poprawność wprowadzonych danych");
             }
         });
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> sampleBookId = event.getRouteParameters().get(PLAYERS_ID).map(Long::parseLong);
-        if (sampleBookId.isPresent()) {
-            Optional<Players> playersFromBackend = playerService.get(sampleBookId.get());
+        Optional<Long> playerID = event.getRouteParameters().get(PLAYERS_ID).map(Long::parseLong);
+        if (playerID.isPresent()) {
+            Optional<Players> playersFromBackend = playerService.get(playerID.get());
             if (playersFromBackend.isPresent()) {
                 populateForm(playersFromBackend.get());
             } else {
-                Notification.show(String.format("The requested sampleBook was not found, ID = %s", sampleBookId.get()),
+                Notification.show(String.format("", playerID.get()),
                         3000, Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
@@ -138,7 +123,7 @@ public class PlayersView extends Div implements BeforeEnterObserver {
             }
         }
     }
-
+    @Secured("ROLE_ADMIN")
     private void createEditorLayout(SplitLayout splitLayout) {
         Div editorLayoutDiv = new Div();
         editorLayoutDiv.setClassName("editor-layout");

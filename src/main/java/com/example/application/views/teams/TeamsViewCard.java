@@ -67,12 +67,10 @@ public class TeamsViewCard extends ListItem {
             Dialog dialog = new Dialog();
             dialog.setCloseOnOutsideClick(true);
 
-            // Utwórz komponenty dla rozszerzonych informacji
             H2 cardHeader = new H2(text);
             Span cardSubtitle = new Span(subtitleText);
             Paragraph cardDescription = new Paragraph(cardDescriptionText);
 
-            // Dodaj komponenty do okna dialogowego
             dialog.add(cardHeader, cardSubtitle, cardDescription);
 
             dialog.open();

@@ -1,7 +1,7 @@
 package com.example.application.views.myaccount;
 
-import com.example.application.data.entity.Users;
-import com.example.application.data.service.UsersService;
+import com.example.application.data.entity.User;
+import com.example.application.data.service.UserService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -21,7 +21,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
-@PageTitle("My Account")
+@PageTitle("Moje konto")
 @Route(value = "account", layout = MainLayout.class)
 @PermitAll
 @Uses(Icon.class)
@@ -37,11 +37,11 @@ public class MyAccountView extends Div {
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private Binder<Users> binder = new Binder<>(Users.class);
-    private UsersService usersService;
+    private Binder<User> binder = new Binder<>(User.class);
+    private UserService userService;
 
-    public MyAccountView(UsersService usersService) {
-        this.usersService = usersService;
+    public MyAccountView(UserService userService) {
+        this.userService = userService;
         addClassName("my-account-view");
 
         add(createTitle());
@@ -54,29 +54,29 @@ public class MyAccountView extends Div {
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
             if (password.getValue().equals(confirmPassword.getValue())) {
-                Users user = binder.getBean();
-                usersService.updateUser(user);
+                User user = binder.getBean();
+                userService.updateUser(user);
                 Notification.show(user.getClass().getSimpleName() + " zapisano zmiany.");
                 clearForm();
             } else {
-                Notification.show("Passwords or email do not match.");
+                Notification.show("Hasła lub adresy email nie są zgodne.");
             }
         });
     }
 
     private void clearForm() {
-        binder.setBean(new Users());
+        binder.setBean(new User());
         password.clear();
         confirmPassword.clear();
     }
 
     private Component createTitle() {
-        return new H3("Personal information");
+        return new H3("Informacje o koncie");
     }
 
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Please enter a valid email address");
+        email.setErrorMessage("Proszę podać poprawny adres email.");
         formLayout.add(firstName, lastName, email, confirmEmail, password, confirmPassword);
         return formLayout;
     }

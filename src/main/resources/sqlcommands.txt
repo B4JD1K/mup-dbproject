@@ -1,0 +1,93 @@
+CREATE DATABASE projekt;
+
+CREATE TABLE IF NOT EXISTS players (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       imie VARCHAR(20),
+                                       nazwisko VARCHAR(30),
+                                       nick VARCHAR(20),
+                                       pozycja VARCHAR(10),
+                                       teamID INT,
+                                       FOREIGN KEY (teamID) REFERENCES teams(id)
+);
+
+CREATE TABLE IF NOT EXISTS teams (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       nazwa VARCHAR(30),
+                                       image VARCHAR(200),
+                                       podtytul VARCHAR(150),
+                                       opiskrotki VARCHAR(300),
+                                       opisdlugi LONGTEXT
+);
+
+CREATE TABLE IF NOT EXISTS teams (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       nazwa VARCHAR(30),
+                                       image VARCHAR(200),
+                                       podtytul VARCHAR(150),
+                                       opiskrotki VARCHAR(300),
+                                       opisdlugi LONGTEXT
+);
+
+CREATE TABLE IF NOT EXISTS team_player (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       teamID INT,
+                                       playerID INT,
+                                       FOREIGN KEY (teamID) REFERENCES teams(id),
+                                       FOREIGN KEY (playerID) REFERENCES players(id)
+);
+
+SELECT players.*, teams.nazwa FROM players
+         INNER JOIN teams ON players.id = teams.id;
+
+SELECT players.*, teams.id, teams.nazwa
+FROM players
+         LEFT JOIN teams ON players.teamID = teams.id;
+
+UPDATE players SET druzyna = 'Astralis' WHERE players.teamID = 1;
+UPDATE players SET druzyna = 'NaVi' WHERE players.teamID = 2;
+UPDATE players SET druzyna = 'G2' WHERE players.teamID = 3;
+UPDATE players SET druzyna = 'Vitality' WHERE players.teamID = 4;
+UPDATE players SET druzyna = 'Liquid' WHERE players.teamID = 5;
+UPDATE players SET druzyna = 'Faze' WHERE players.teamID = 6;
+
+INSERT INTO teams (id, nazwa, image, podtytul, opiskrotki, opisdlugi)
+VALUES
+   (NULL, 'Astralis',   'https://cybersport.pl/wp-content/uploads/2020/10/astralis_wallpaper20.jpg',   'Najlepsza drużyna wszechczasów w historii CS:GO',   'Duńska profesjonalna drużyna e-sportowa, znana głównie ze swojej taktycznej dominacji na wielu mistrzostwach w CS:GO.',   'Astralis jest powszechnie uznawana za najlepszą drużynę w historii Counter-Strike: Global Offensive (CS:GO). Ich osiągnięcia, dominacja i wpływ na świat e-sportu czynią ich niezrównanymi w tej dyscyplinie. Drużyna Astralis zrewolucjonizowała sposób gry w CS:GO, wprowadzając nowe standardy i strategie, które na zawsze zmieniły krajobraz profesjonalnych rozgrywek. Co czyni Astralis tak wyjątkowymi? To połączenie niezwykłej indywidualnej klasy zawodników, doskonałego zgrania, zdolności taktycznych i doskonałej pracy zespołowej. Ich skład wyróżnia się nie tylko umiejętnościami strzeleckimi, ale także niezawodnym podejmowaniem decyzji w kluczowych momentach, umiejętnością adaptacji do zmieniającej się sytuacji i zdolnością do współpracy na najwyższym poziomie. Astralis odniosła niezliczone sukcesy, zwyciężając w najważniejszych turniejach i zdobywając wiele tytułów mistrzowskich. Ich styl gry, precyzja i zrozumienie gry są bezprecedensowe. Drużyna potrafi zaskakiwać przeciwników innowacyjnymi taktykami i wykorzystywać każdą słabość rywali. Ich wpływ na e-sport jest ogromny. Astralis nie tylko dominuje na arenie zawodowej, ale również inspiruje kolejne pokolenia graczy, zachęcając ich do podążania za marzeniami i dążenia do doskonałości. Są wzorem profesjonalizmu, dyscypliny i poświęcenia, które są niezbędne do osiągnięcia sukcesu na najwyższym poziomie. Astralis - to nie tylko drużyna, to legenda w świecie CS:GO, która na zawsze pozostanie w pamięci jako najlepsza drużyna wszechczasów.'),
+   (NULL, 'NaVi',   'https://wallpapercave.com/wp/wp10531533.jpg',   'Od 1.6 po CS:GO, NaVi to zawsze topowa drużyna.',   'Rosyjska profesjonalna drużyna e-sportowa, znana z od czasów CS 1.6 gdzie odnosiła liczne sukcesy, a obecnie walczy w rozgrywkach CS:GO.',   'NaVi (Natus Vincere) to zespół, który uważany jest za jedną z najlepszych drużyn w historii Counter-Strike: Global Offensive (CS:GO). Rosyjska organizacja e-sportowa zdobyła sławę dzięki swojej niezrównanej dominacji na arenie profesjonalnych rozgrywek. Od samego początku istnienia, NaVi wykazała się wybitnymi umiejętnościami strzeleckimi, strategicznymi decyzjami i zdolnościami taktycznymi. Co wyróżnia NaVi? To ich zdolność do wykonania niewiarygodnych akcji, wygrania trudnych sytuacji i dostarczania niezapomnianych momentów na scenie e-sportowej. Ich skład zawsze był złożony z graczy o wyjątkowym talentu, którzy potrafią współpracować i działać jak zgrana jednostka. NaVi zaskakuje przeciwników swoją nieprzewidywalnością i nieustannym doskonaleniem strategii. Drużyna odniosła liczne sukcesy, wygrywając wiele prestiżowych turniejów i zdobywając tytuły mistrzowskie. Ich styl gry jest oparty na agresywnym podejściu, szybkich i celnych strzałach oraz zdolności do kontrolowania sytuacji na mapie. NaVi to nie tylko drużyna, ale również symbol rosyjskiej siły i e-sportowego talentu. Ich wpływ na CS:GO jest niezaprzeczalny, a ich osiągnięcia i umiejętności są nadal inspiracją dla wielu młodych graczy na całym świecie.'),
+   (NULL, 'Vitality',   'https://wallpaperaccess.com/full/4599698.jpg',   'Mistrzowie z Wybrańcem odwracającym przebieg meczy',   'Niezachwiana determinacja i strategiczne genialność oraz The Coosen One czynią z Vitality potęgę, z którą trzeba się liczyć.',   'Vitality to francuska drużyna e-sportowa, która jest uważana za jedną z najlepszych w historii Counter-Strike: Global Offensive (CS:GO). Drużyna ta osiągnęła ogromny sukces dzięki swoim umiejętnościom strzeleckim, taktycznemu podejściu i zdolności do adaptacji do zmieniających się warunków gry. Co wyróżnia Vitality? To głównie genialne występy ich gwiazd, w tym jednego z najbardziej utalentowanych graczy w historii CS:GO - Mathieu ywOo Herbaut. Vitality potrafi wykonywać skomplikowane manewry, odbierać rywalom kontrolę nad grą i zdobywać kluczowe rundy. Drużyna odniosła znaczące zwycięstwa na najważniejszych turniejach, zdobywając tytuły mistrzowskie i zdobywając uznanie wśród społeczności e-sportowej. Ich styl gry opiera się na agresywnych atakach, precyzyjnych strzałach i zdolności do szybkiego podejmowania decyzji. Vitality stała się ikoną dla francuskiego e-sportu i dla fanów CS:GO na całym świecie. Ich profesjonalizm, poświęcenie i ciężka praca stały się wzorem dla innych drużyn. Wciąż dążą do doskonałości i inspirują kolejne pokolenia graczy.'),
+   (NULL, 'G2',   'https://i.pinimg.com/originals/21/38/a3/2138a31b37050769b872d03a78da7ecd.jpg',   'Wzmocnionienia agresywnym sylem uwalniają nieskrępowaną furię',   'Agresywny styl gry G2 i nieustające dążenie do zwycięstwa zachwycają publiczność na całym świecie.',   'G2 to europejska drużyna e-sportowa, która zasłynęła jako jedna z najlepszych w historii Counter-Strike: Global Offensive (CS:GO). Ich dynamiczny styl gry, zdolności taktyczne i wyjątkowe umiejętności indywidualne przyniosły im wiele sukcesów na arenie profesjonalnych rozgrywek.  Co czyni G2 tak wyjątkowymi? To zespół złożony z graczy o niezwykłym talentu, którzy potrafią wykonywać oszałamiające akcje, wprowadzając publiczność w zachwyt. G2 jest znane z agresywnego podejścia do gry, skutecznych ataków i zdolności do podejmowania decyzji w krótkim czasie. Drużyna odniosła wiele sukcesów, wygrywając prestiżowe turnieje i zdobywając tytuły mistrzowskie. Ich strategie i innowacyjne podejście do gry uczyniły ich jednym z najbardziej respektowanych zespołów w CS:GO. G2 to nie tylko drużyna, ale również marka, która reprezentuje europejski e-sport na najwyższym poziomie. Ich styl gry, pasja i zobowiązanie do doskonalenia sprawiają, że są inspiracją dla wielu graczy na całym świecie.'),
+   (NULL, 'Heroic',   'https://esports.gg/_next/image/?url=https%3A%2F%2Fadmin.esports.gg%2Fwp-content%2Fuploads%2F2023%2F01%2FHeroic-Rebrand-968x544.jpeg&w=3840&q=75 ',   'Nieugięci, Przekraczający Granice, Inspirujący Wielkością,Wytrwałość i niezłomny duch wynoszą Heroic na bohateryczne szczyty w świecie esportu.','Heroic to duńska drużyna e-sportowa, która jest uważana za jedną z najlepszych w historii Counter-Strike: Global Offensive (CS:GO). Ich sukcesy, profesjonalizm i zdolności do strategicznej gry uczyniły ich niezwykłymi na arenie e-sportowej. Heroic wyróżnia się doskonałym zgraniem zespołowym, elastycznym podejściem do taktyk i zdolnościami indywidualnymi swoich zawodników. Drużyna ta potrafi wykorzystać słabości przeciwników, tworząc skomplikowane manewry, które często prowadzą do zwycięstwa. Drużyna odniosła wiele sukcesów, wygrywając ważne turnieje i zdobywając uznanie w społeczności CS:GO. Ich umiejętność analizowania gry i dostosowywania się do zmieniających się warunków czynią ich nieprzewidywalnymi dla rywali. Heroic to przykład doskonałej organizacji, poświęcenia i determinacji w dążeniu do doskonałości. Ich wpływ na e-sport jest widoczny, a ich osiągnięcia stawiają ich wśród najlepszych drużyn w historii CS:GO.'),
+   (NULL, 'FaZe Clan',   'https://e1.pxfuel.com/desktop-wallpaper/365/424/desktop-wallpaper-faze-clan-completes-roster-with-two-cs-go-signings-faze-clan-members.jpg',   'Międzynarodowe umiejętności, styl i niezrównana błyskotliwość','Dynamiczny skład FaZe Clan i innowacyjne strategie posuwają granice rywalizacji w grach kompetencyjnych', 'FaZe Clan to międzynarodowa drużyna e-sportowa, która jest uważana za jedną z najlepszych w historii Counter-Strike: Global Offensive (CS:GO). Ich styl gry, umiejętności strzeleckie i zdolności taktyczne uczyniły ich jednym z najbardziej respektowanych zespołów na scenie e-sportowej. FaZe Clan składa się z graczy z różnych krajów, którzy łączą swoje umiejętności, aby tworzyć niezwykłe akcje i strategie. Drużyna ta słynie z dynamicznego i agresywnego stylu gry, który często sprawia, że są nieprzewidywalni dla przeciwników. Drużyna odniosła wiele sukcesów, wygrywając prestiżowe turnieje i zdobywając tytuły mistrzowskie. Ich umiejętność adaptacji do różnych sytuacji i zdolność do podejmowania trafnych decyzji w kluczowych momentach sprawiają, że są trudni do pokonania. FaZe Clan to nie tylko drużyna e-sportowa, ale również marka, która przekracza granice esportu. Ich wpływ na społeczność e-sportową jest ogromny, a ich styl gry i kreatywność inspirują innych graczy na całym świecie.');
+
+INSERT INTO players (id, imie, nazwisko, nick, pozycja, teamID)
+VALUES
+    (NULL, 'Nicolai', 'Reedtz', 'dev1ce', 'AWP', 1),
+    (NULL, 'Peter', 'Rasmussen', 'dupreeh', 'RIFLER', 1),
+    (NULL, 'Emil', 'Reif', 'Magisk', 'RIFLER', 1),
+    (NULL, 'Andreas', 'Højsleth', 'Xyp9x', 'RIFLER', 1),
+    (NULL, 'Lukas', 'Rossander', 'gla1ve', 'IGL', 1),
+    (NULL, 'Egor', 'Vasilyev', 'flamie', 'RIFLER', 2),
+    (NULL, 'Denis', 'Sharipov', 'electronic', 'RIFLER', 2),
+    (NULL, 'Aleksandr', 'Kostyliev', 's1mple', 'AWP', 2),
+    (NULL, 'Kirill', 'Mikhailov', 'Boombl4', 'IGL', 2),
+    (NULL, 'Ilya', 'Zalutskiy', 'Perfecto', 'RIFLER', 2),
+    (NULL, 'Mathieu', 'Herbaut', 'ZywOo', 'AWP', 3),
+    (NULL, 'Cédric', 'Guipouy', 'RpK', 'RIFLER', 3),
+    (NULL, 'Dan', 'Madesclaire', 'apEX', 'IGL', 3),
+    (NULL, 'Richard', 'Papillon', 'shox', 'RIFLER', 3),
+    (NULL, 'Kévin', 'Rabier', 'misutaaa', 'RIFLER', 3),
+    (NULL, 'Nikola', 'Kovač', 'NiKo', 'RIFLER', 4),
+    (NULL, 'Nemanja', 'Kovač', 'huNter-', 'RIFLER', 4),
+    (NULL, 'François', 'Delaunay', 'AmaNEk', 'RIFLER', 4),
+    (NULL, 'Audric', 'Jug', 'JaCkz', 'RIFLER', 4),
+    (NULL, 'Kenny', 'Schrub', 'kennyS', 'AWP', 4),
+    (NULL, 'Casper', 'Møller', 'cadiaN', 'AWP/IGL', 5),
+    (NULL, 'Johannes', 'Borup', 'b0RUP', 'RIFLER', 5),
+    (NULL, 'Martin', 'Lund', 'stavn', 'RIFLER', 5),
+    (NULL, 'René', 'Madsen', 'TeSeS', 'RIFLER', 5),
+    (NULL, 'Nikolaj', 'Kristensen', 'niko', 'RIFLER', 5),
+    (NULL, 'Håvard', 'Nygaard', 'rain', 'RIFLER', 6),
+    (NULL, 'Marcelo', 'David', 'coldzera', 'RIFLER', 6),
+    (NULL, 'Helvijs', 'Saunačs', 'broky', 'AWP', 6),
+    (NULL, 'Russel', 'Van Dulken', 'Twistzz', 'RIFLER', 6),
+    (NULL, 'Olof', 'Kajbjer', 'olofmeister', 'RIFLER', 6);

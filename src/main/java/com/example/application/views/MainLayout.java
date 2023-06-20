@@ -6,11 +6,9 @@ import com.example.application.views.editor.EditorView;
 import com.example.application.views.mainpage.MainPageView;
 import com.example.application.views.myaccount.MyAccountView;
 import com.example.application.views.players.PlayersView;
-import com.example.application.views.search.SearchView;
 import com.example.application.views.teams.TeamsView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
@@ -25,16 +23,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import java.io.ByteArrayInputStream;
 import java.util.Optional;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-/**
- * The main view is a top-level placeholder for other views.
- */
 public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
@@ -86,10 +79,6 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Players", PlayersView.class, LineAwesomeIcon.COLUMNS_SOLID.create()));
 
         }
-        if (accessChecker.hasAccess(SearchView.class)) {
-            nav.addItem(new SideNavItem("Search", SearchView.class, LineAwesomeIcon.FILTER_SOLID.create()));
-
-        }
         if (accessChecker.hasAccess(MyAccountView.class)) {
             nav.addItem(new SideNavItem("My Account", MyAccountView.class, LineAwesomeIcon.USER.create()));
 
@@ -109,20 +98,12 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName());
-            StreamResource resource = new StreamResource("profile-pic",
-                    () -> new ByteArrayInputStream(user.getProfilePicture()));
-            avatar.setImageResource(resource);
-            avatar.setThemeName("xsmall");
-            avatar.getElement().setAttribute("tabindex", "-1");
-
             MenuBar userMenu = new MenuBar();
             userMenu.setThemeName("tertiary-inline contrast");
 
             MenuItem userName = userMenu.addItem("");
             Div div = new Div();
-            div.add(avatar);
-            div.add(user.getName());
+            div.add(user.getUsername());
             div.add(new Icon("lumo", "dropdown"));
             div.getElement().getStyle().set("display", "flex");
             div.getElement().getStyle().set("align-items", "center");
@@ -134,11 +115,11 @@ public class MainLayout extends AppLayout {
 
             layout.add(userMenu);
         } else {
-            Anchor registerLink = new Anchor("register", "Register");
+            Anchor registrationLink = new Anchor("registration", "Registration");
             Anchor loginLink = new Anchor("login", "Sign in");
 
             VerticalLayout links = new VerticalLayout();
-            links.add(registerLink, loginLink);
+            links.add(registrationLink, loginLink);
             links.setSpacing(false);
             links.setPadding(false);
 
